@@ -8,7 +8,6 @@ Product.getAll = result => {
             result(null, err);
             return;
         }
-        console.log("Products: ", res);
         result(null, res);
     });
 };
@@ -19,7 +18,6 @@ Product.getbyid = (id, result) => {
             result(null, err);
             return;
         }
-        console.log("Products: ", res[0]);
         result(null, res[0]);
     });
 };
@@ -56,5 +54,4 @@ Product.addtocart = (req, result) => {
             result(null, res);
         });
 };
-
 module.exports = Product;

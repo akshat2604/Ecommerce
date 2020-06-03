@@ -1,0 +1,17 @@
+.card img {
+    width: 100%;
+}
+
+.card {
+    padding: 0;
+}
+
+.card .caption-full {
+    padding: 9px;
+}
+.active{
+    color:white ;
+}
+.disabled {
+    pointer-events: none;
+}

@@ -1,9 +1,20 @@
 const express = require("express");
-const auth= require("../middleware/auth")
+const auth = require("../middleware/auth")
 const router = express.Router();
-const user= require("../controllers/user");
+const user = require("../controllers/user"),
+    passport = require("passport");
+
 router.post('/register', user.register);
-router.post('/login',user.login);
-router.post('/logout',auth,user.logout);
-router.post('/logoutofall',auth,user.logoutofall);
-module.exports=router;
+router.post('/login', passport.authenticate("local", {
+    failureRedirect: "/login",
+    failureFlash: true,
+    successFlash: 'Loggedin Successfully'
+}), function (req, res) {
+    res.redirect("/")
+}
+);
+router.get('/register', user.registerform);
+router.get('/login', user.loginform);
+router.get('/logout', auth, user.logout);
+router.post('/logoutofall', auth, user.logoutofall);
+module.exports = router;

@@ -6,7 +6,7 @@ exports.findAll = (req, res) => {
         message:
           err.message || "Some error occurred while retrieving Products."
       });
-    else res.send(data);
+    else {res.render("product/index",{data:data});}
   });
 };
 exports.getbyid = (req, res) => {

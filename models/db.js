@@ -4,19 +4,18 @@ var connection = mysql.createConnection({
   host: dbConfig.HOST,
   user: dbConfig.USER,
   password: dbConfig.PASSWORD,
-  database: dbConfig.DB
 });
 connection.connect(function (err) {
   if (err) throw err;
   console.log("Connected Database!");
   connection.query("CREATE DATABASE if not exists mydb", function (err, result) {
     if (err) throw err;
-    connection.query("USE mydb");
+    connection.query(`USE ${dbConfig.DB}`);
     var queries = [
       `CREATE TABLE  if not exists Product
           (
             id VARCHAR(255) NOT NULL PRIMARY KEY,
-            Type VARCHAR(7) NOT NULL,
+            Type VARCHAR(17) NOT NULL,
             Cost int(5) NOT NULL,
             Quantity int(2) NOT NULL
           ); `,
@@ -31,12 +30,6 @@ connection.connect(function (err) {
               Name VARCHAR(20) NOT NULL,
               Cart_id VARCHAR(255) NOT NULL,
               FOREIGN KEY(Cart_id) REFERENCES cart(id)
-          );`,
-      `CREATE TABLE if not exists tokens
-          ( 
-            token varchar(255) NOT NULL PRIMARY KEY,
-            Customer_id varchar(255) NOT NULL ,
-            FOREIGN KEY (Customer_id) REFERENCES Customer(id)
           );`,
       `CREATE TABLE if not exists password
           (

@@ -1,0 +1,22 @@
+<%- include("../partials/header") %>
+
+<div class="container">
+    <div class="row  ">
+        <% data.forEach((product)=>{ %>
+        <div class=" col-xl-3 col-md-4 col-sm-6 ">
+            <div class=" card ">
+                <img src="<%= product.image%>" alt="<%= product.name%>" class="card-img-top  mx-auto d-block"
+                    style="max-height:95%;width:auto;max-width:100%">
+                <div class="card-body">
+                    <div class="card-title bg-dark text-light text-center"><%= product.Type%></div>
+                    <div class="card-text ">$<%= product.Cost%></div>
+                    <a href="/products/<%=product.id %>" class="stretched-link"></a>
+                </div>
+            </div>
+        </div>
+
+        <% }) %>
+    </div>
+</div>
+
+<%- include("../partials/footer") %>
