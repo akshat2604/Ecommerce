@@ -16,7 +16,7 @@ exports.getbyid = (req, res) => {
         message:
           err.message || "Some error occurred while retrieving Products."
       });
-    else res.send(data);
+    else res.render("/product/show",{data:data});
   });
 };
 exports.add = (req, res) => {
