@@ -1,65 +1,53 @@
 <%- include("../partials/header") %>
-<div class="container">
-    <div class="jumbotron jumbotron-conatiner text-center" style="height:100px">
-    </div>
-    <div class="row">
-        <div class="col-md-3">
-            <div class="list-group">
-                <li class="list-group-item active">Info 1</li>
-                <li class="list-group-item">Info 2</li>
-                <li class="list-group-item">Info 3</li>
-            </div>
-        </div>
-        <div class="col-md-9">
-            <div class="card">
-                <img class="rounded img-responsive " src="<%= movie.image%>" alt="<%= data.type %>"
-                    style="max-width:300px;height: auto;">
-                <div class="caption-full">
-                    <p class=""><%= data.description %></p>
-                </div>
-                <% if(currentUser && movie.author.id.equals(currentUser._id)||currentUser && currentUser.isAdmin){%>
-                <div class="row">
-                    <p class=" col-6 text-left">
-                        <a class="btn btn-success" href="/movies/<%= movie._id %>/edit">Edit</a>
-                    </p>
-                    <form action="/movies/<%= movie._id %>?_method=DELETE" class=" col-6 text-right" method="POST">
-                        <button type="submit" class="btn btn-danger">Delete</button></form>
-                </div>
-                <% }%>
-            </div>
-            <div class="card">
-                <div class="text-right">
-                    <a class="btn btn-success" href="/movies/<%= movie._id %>/reviews/new">Add New Review</a>
-                </div>
-                <hr>
-                <% movie.reviews.forEach((review) => {%>
-                <div class="row">
-                    <div class="col-md-9">
-                        <strong><%= review.author.username %></strong>
-                        <p>
-                            <%= review.text %>
-                        </p>
-                    </div>
-                    <div class="col-md-3 justify-content-right">
-                        <div class="text-right"><%= moment(review.createdAt).fromNow() %></div>
-                        <% if(currentUser &&review.author.id.equals(currentUser._id)){%>
-                        <div class="row">
-                            <p class=" col-6 text-left">
-                                <a class="btn btn-success"
-                                    href="/movies/<%= movie._id %>/reviews/<%= review._id%>/edit">Edit</a>
-                            </p>
-                            <form action="/movies/<%= movie._id %>/reviews/<%= review._id%>?_method=DELETE"
-                                class=" col-6 text-right" method="POST">
-                                <button type="submit" class="btn btn-danger">Delete</button></form>
-                        </div>
-                        <% }%>
-                    </div>
-                </div>
-                <hr>
-                <% }) %>
-            </div>
+<div class="row">
+
+    <div class="col-md-6">
+        <div class="card">
+            <img src="<%=data.image%>" alt="<%= data.Type%>" class="card-img-top rounded img-responsive"
+                style="max-width:300px;max-height: 300px;">
         </div>
     </div>
-    <a href="/movies">Go Back</a>
+    <div class="col-md-3">
+        <div class="card-header">
+            <h2>Name: <%= data.name %></h2>
+            <h6>Type: <%= data.Type %></h6>
+            <h3> Cost: <%= data.Cost %></h3>
+        </div>
+        <%if( currentUser&& currentUser.id==data.seller_id){%>
+        <div class="row">
+            <p class=" col-6 text-left">
+                <a class="btn btn-success" href="/product/<%=data.id %>/edit">Edit</a>
+            </p>
+            <form action="/product/<%=data.id%>?_method=DELETE" class=" col-6 text-right" method="POST">
+                <button type="submit" class="btn btn-danger">Delete</button></form>
+        </div>
+
+        <%}else{%>
+        <%if(data.Quantity>0){%>
+        <form action="/<%=data.id%>/addtocart" method="POST" class="form-inline">
+            <div class="form-group">
+                <label for="Quantity">Quantity:</label>
+                <input type="number" class="form-control" name="quantity" id="Quantity" required min=1
+                    max=<%= data.Quantity %>>
+            </div>
+            <div>
+                <button type="submit" class=" btn btn-primary text-right">Add to cart</button>
+            </div>
+        </form>
+        <%}else{%>
+        <p class="danger">Out of Stock!!</p>
+        <%}%> 
+          <%}%>
+
+    </div>
+
+    <div class="col-md-3">
+        <div class="list-group">
+            <li class="list-group-item active">Info 1</li>
+            <li class="list-group-item">Info 2</li>
+            <li class="list-group-item">Info 3</li>
+        </div>
+    </div>
 </div>
+
 <%- include("../partials/footer") %>

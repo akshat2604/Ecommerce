@@ -5,7 +5,6 @@ const sql = require("./db.js"),
 User.register = async (newCustomer, result) => {
     const cart_id = uuidv1().toString();
     const customer_id = uuidv1().toString();
-    console.log(newCustomer)
     const password = await bcrypt.hash(newCustomer.password, 8);
     try {
         sql.query(`insert into cart values('${cart_id}');`, (err, res) => {
@@ -14,13 +13,18 @@ User.register = async (newCustomer, result) => {
                 sql.query(`insert into customer values(
                 '${customer_id}',
                 '${newCustomer.email}',
-               ' ${newCustomer.name}',
-                '${cart_id}');`, (err, res) => {
+                '${newCustomer.name}',
+                '${newCustomer.number}',
+                '${newCustomer.pincode}',
+                '${newCustomer.address}',
+                '${cart_id}',
+                0);`, (err, res) => {
                     if (err) {
                         result(err, null);
                     }
                     else {
                         sql.query(`insert into password values('${password}','${customer_id}');`);
+
                         delete newCustomer.password;
                         result(null, newCustomer)
                     }
@@ -33,6 +37,48 @@ User.register = async (newCustomer, result) => {
         sql.query(`delete * from customer where id='${customer_id}'`);
         sql.query(`delete *  from password  where customer_id='${customer_id}'`);
         result(e, null);
+    }
+};
+User.seller_register = async (newCustomer, result) => {
+    if (newCustomer.secret == "admin") {
+        const cart_id = uuidv1().toString();
+        const customer_id = uuidv1().toString();
+        const password = await bcrypt.hash(newCustomer.password, 8);
+        try {
+            sql.query(`insert into cart values('${cart_id}');`, (err, res) => {
+                if (err) result(err, null);
+                else {
+                    sql.query(`insert into customer values(
+                '${customer_id}',
+                '${newCustomer.email}',
+               ' ${newCustomer.name}',
+                '${newCustomer.number}',
+                '${newCustomer.pincode}',
+                '${newCustomer.address}',
+                '${cart_id}',
+                1);`, (err, res) => {
+                        if (err) {
+                            result(err, null);
+                        }
+                        else {
+                            sql.query(`insert into password values('${password}','${customer_id}');`);
+
+                            delete newCustomer.password;
+                            result(null, newCustomer)
+                        }
+                    });
+                }
+            });
+        }
+        catch (e) {
+            sql.query(`delete * from cart where id='${cart_id}'`);
+            sql.query(`delete * from customer where id='${customer_id}'`);
+            sql.query(`delete *  from password  where customer_id='${customer_id}'`);
+            result(e, null);
+        }
+    }
+    else {
+       result("Invalid secret key",null)
     }
 };
 User.login = async (customer, result) => {

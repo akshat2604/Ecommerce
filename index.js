@@ -41,10 +41,9 @@ passport.use('local', new LocalStrategy({ passReqToCallback: true, usernameField
                             return done(null, false, req.flash("error", "Incorrect username and password."));
                         else {
                             if (resi.length != 0) {
-                                console.log(password, resi[0].password)
                                 const result = await bcrypt.compare(password, resi[0].password)
                                 if (result == true) {
-                                    done(null,user[0]);
+                                    done(null, user[0]);
                                 }
                                 else {
                                     return done(null, false, req.flash("error", "Incorrect username and password."));
@@ -74,6 +73,7 @@ passport.deserializeUser(function (id, done) {
 
 app.use(function (req, res, next) {
     res.locals.currentUser = req.user;
+    res.locals.cart = req.cart;
     res.locals.error = req.flash("error");
     res.locals.success = req.flash("success");
     next();

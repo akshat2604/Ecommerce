@@ -12,18 +12,7 @@ connection.connect(function (err) {
     if (err) throw err;
     connection.query(`USE ${dbConfig.DB}`);
     var queries = [
-      `CREATE TABLE  if not exists Product
-          (
-            id VARCHAR(255) NOT NULL PRIMARY KEY,
-            Type VARCHAR(17) NOT NULL,
-            image varchar(255) not null,
-            Cost int(5) NOT NULL,
-            Quantity int(2) NOT NULL,
-            name varchar(255) not null,
-            seller_id VARCHAR(255) NOT NULL,
-            FOREIGN KEY(seller_id) REFERENCES seller(id)
-          ); `
-      ,
+
       `CREATE TABLE if not exists Cart
           (
               id VARCHAR(255) NOT NULL PRIMARY KEY
@@ -34,13 +23,26 @@ connection.connect(function (err) {
               id VARCHAR(255) NOT NULL PRIMARY KEY,
               email VARCHAR(25) NOT NULL unique ,
               Name VARCHAR(20) NOT NULL,
-              phone_number varchar(20) not null,
+              phone_number varchar(20) not null unique,
               pincode varchar(20) not null,
               address varchar(255) not null,
               Cart_id VARCHAR(255) NOT NULL,
+              isseller int(1) not null default 0,
               FOREIGN KEY(Cart_id) REFERENCES cart(id)
           );`
       ,
+      `CREATE TABLE  if not exists Product
+          (
+            id VARCHAR(255) NOT NULL PRIMARY KEY,
+            Type VARCHAR(17) NOT NULL,
+            isvisible int(1) not null,
+            image varchar(10000) not null,
+            Cost int(5) NOT NULL,
+            Quantity int(2) NOT NULL,
+            name varchar(255) not null,
+            seller_id VARCHAR(255) NOT NULL,
+            FOREIGN KEY(seller_id) REFERENCES customer(id)
+          ); `,
       `CREATE TABLE if not exists password
           (
              password varchar(255) NOT NULL ,
@@ -51,8 +53,8 @@ connection.connect(function (err) {
       `CREATE TABLE  if not exists Cart_item
         (
           Quantity int(5) NOT NULL,
-          Cart_id VARCHAR(7) NOT NULL,
-          Product_id VARCHAR(7) NOT NULL,
+          Cart_id VARCHAR(255) NOT NULL,
+          Product_id VARCHAR(255) NOT NULL,
           FOREIGN KEY(Cart_id) REFERENCES Cart(id),
           FOREIGN KEY(Product_id) REFERENCES Product(id),
           Primary key(Cart_id, Product_id)
@@ -68,6 +70,12 @@ connection.connect(function (err) {
         );`
     ]
     queries.forEach(query => connection.query(query))
+    /* connection.query(`select * from cart_item where product_id='2'`, (err, product) => {
+       if (err) console.log(err);
+       else {
+         console.log(result.fieldCount);
+       }
+     });*/
 
   });
 });

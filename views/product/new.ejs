@@ -2,21 +2,29 @@
 
 <div class="container">
     <div class="jumbotron jumbotron-container text-center" style="height:100px">
-        <h1>Add a new Movie item</h1>
+        <h1>Add a new Product</h1>
     </div>
     <div class="row justify-content-center  ">
-        <form action="/movies" method="POST">
+        <form action="/add" method="POST">
             <div class="form-group">
-                <label for="title">Title:</label>
-                <input type="text" class="form-control" placeholder="Title of Movie" name="title" id="title" required>
+                <label for="Type">Type:</label>
+                <input type="text" class="form-control" placeholder="Type of product" name="type" id="Type" required>
             </div>
             <div class="form-group">
                 <label for="image">Image:</label>
                 <input type="url" class="form-control" placeholder="Link for image" name="image" id="image" required>
             </div>
             <div class="form-group">
-                <label for="description">Description:</label>
-                <textarea class="form-control"  name="description" id="description" required></textarea>
+                <label for="name">Name:</label>
+                <input type="text" class="form-control" placeholder="Name of product" name="name" id="Name" required>
+            </div>
+            <div class="form-group">
+                <label for="Quantity">Quantity:</label>
+                <input type="number" class="form-control"  name="quantity" id="Quantity" min=1 required>
+            </div>
+            <div class="form-group">
+                <label for="Cost">Cost:</label>
+                <input type="number" class="form-control" name="cost" id="Cost"  min=1 required>
             </div>
             <div class="row">
                 <div class="col-6"><button type="reset" class=" btn btn-danger">Reset</button></div>
@@ -25,6 +33,6 @@
 
         </form>
     </div>
-    <a href="/movies">Go Back</a>
+    <a href="/products">Go Back</a>
 </div>
 <%- include("../partials/footer") %>
