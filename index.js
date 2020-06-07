@@ -81,7 +81,10 @@ app.use(function (req, res, next) {
 
 app.use("/", user);
 app.use("/", product);
-app.get('*', (req, res) => res.send("404"));
+
+app.get('*', (req, res) => {
+    res.redirect("/")
+});
 app.listen(process.env.PORT || 8080, process.env.IP, function () {
     console.log("Minor Started");
 });

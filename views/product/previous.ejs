@@ -1,0 +1,33 @@
+<%- include("../partials/header") %>
+
+<div class="container">
+    <div class="row  ">
+
+        <% if(data.length!=0) { %>
+        <% var total=0%>
+        <% data.forEach((product)=>{ %>
+        <%total+=product.curr.Cost*product.res.Quantity%>
+        <% var date=new Date(parseInt(product.res.date))%>
+        <div class=" col-md-6 text-center">
+            <div class=" card ">
+                <div class="card-body">
+                    <div class="card-title bg-dark text-light text-center"><%= product.curr.name%></div>
+                    <div> Price: Rs. <%= product.curr.Cost%></div>
+                    <div>Quantity: <%=product.res.Quantity%></div>
+                    <div>Date: <%=date%></div>
+                    <a href="/product/<%=product.curr.id %>" class="stretched-link"></a>
+                </div>
+            </div>
+        </div>
+
+        <% })%>
+    </div>
+
+    <%}  else {%>
+    <div class="text-center"></div>
+    <h1 class="warning">No Previous Orders!</h1>
+    <%}%>
+    </div>
+</div>
+
+<%- include("../partials/footer") %>

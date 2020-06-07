@@ -1,5 +1,6 @@
 .card img {
-    width: 100%;
+    width: auto;
+    max-height: 100%;
 }
 
 .card {
@@ -9,9 +10,11 @@
 .card .caption-full {
     padding: 9px;
 }
-.active{
-    color:white ;
+
+.active {
+    color: white;
 }
+
 .disabled {
     pointer-events: none;
 }

@@ -35,7 +35,7 @@ connection.connect(function (err) {
           (
             id VARCHAR(255) NOT NULL PRIMARY KEY,
             Type VARCHAR(17) NOT NULL,
-            isvisible int(1) not null,
+            isvisible int(1) default 1 not null,
             image varchar(10000) not null,
             Cost int(5) NOT NULL,
             Quantity int(2) NOT NULL,
@@ -60,13 +60,14 @@ connection.connect(function (err) {
           Primary key(Cart_id, Product_id)
         );`,
       `CREATE TABLE  if not exists purchased
-        ( id varchar(255) not null primary key,
+        ( 
           Quantity int(5) NOT NULL,
           date varchar(255) not null,
           Product_id varchar(255) NOT NULL  ,
           FOREIGN KEY (Product_id) REFERENCES Product(id),
           Customer_id varchar(255) NOT NULL  ,
-          FOREIGN KEY (Customer_id) REFERENCES Customer(id)
+          FOREIGN KEY (Customer_id) REFERENCES Customer(id),
+          Primary key(Customer_id, Product_id,date)
         );`
     ]
     queries.forEach(query => connection.query(query))

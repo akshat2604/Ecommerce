@@ -1,19 +1,21 @@
 <%- include("../partials/header") %>
 <div class="row">
-
     <div class="col-md-6">
         <div class="card">
             <img src="<%=data.image%>" alt="<%= data.Type%>" class="card-img-top rounded img-responsive"
-                style="max-width:300px;max-height: 300px;">
+                style=" height: 500px;
+                max-height: 100%;
+                width: auto;
+                max-width: 100%">
         </div>
     </div>
     <div class="col-md-3">
-        <div class="card-header">
-            <h2>Name: <%= data.name %></h2>
-            <h6>Type: <%= data.Type %></h6>
-            <h3> Cost: <%= data.Cost %></h3>
+        <div class="card-body">
+            <h2 class=" text-primary pb-2">Name: <%= data.name %></h2>
+            <h6 class=" pb-3">Type: <%= data.Type %></h6>
+            <h3 class=" pb-2"> Cost: <%= data.Cost %></h3>
         </div>
-        <%if( currentUser&& currentUser.id==data.seller_id){%>
+        <%if( currentUser&& currentUser.id==data.seller_id){ if(data.isvisible==1){%>
         <div class="row">
             <p class=" col-6 text-left">
                 <a class="btn btn-success" href="/product/<%=data.id %>/edit">Edit</a>
@@ -21,19 +23,28 @@
             <form action="/product/<%=data.id%>?_method=DELETE" class=" col-6 text-right" method="POST">
                 <button type="submit" class="btn btn-danger">Delete</button></form>
         </div>
-
         <%}else{%>
-        <%if(data.Quantity>0){%>
-        <form action="/<%=data.id%>/addtocart" method="POST" class="form-inline">
+        <div class="text-center pt-3"></div>
+        <h1 class="warning">This Product is view only as it's seller might have modified or deleted it.</h1>
+        <%}%>
+        <%}else if(currentUser && currentUser.isseller==1){%>
+        <div class="text-center pt-3"></div>
+        <h1 class="warning">This Product is not sold by you.</h1>
+        <%}else{%>
+        <%if(data.Quantity>0 &&(data.isvisible==1)){%>
+        <form action="/<%=data.id%>/addtocart" method="POST" class="form-inline pt-5">
             <div class="form-group">
                 <label for="Quantity">Quantity:</label>
                 <input type="number" class="form-control" name="quantity" id="Quantity" required min=1
                     max=<%= data.Quantity %>>
             </div>
-            <div>
+            <div class=" pl-5">
                 <button type="submit" class=" btn btn-primary text-right">Add to cart</button>
             </div>
         </form>
+        <%}else if(data.isvisible==0){%>
+        <div class="text-center pt-3"></div>
+        <h1 class="warning">This Product is view only as it's seller might have modified or deleted it.</h1>
         <%}else{%>
         <p class="danger">Out of Stock!!</p>
         <%}%> 

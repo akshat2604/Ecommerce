@@ -13,7 +13,7 @@
 
 <body style="padding-top: 50px;">
     <nav class="navbar navbar-expand-lg bg-dark navbar-dark fixed-top">
-        <a class="navbar-brand" href="/"> XYZ</a>
+        <a class="navbar-brand" href="/"> E-commerce</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -34,7 +34,7 @@
                 <% } else { %>
                 <li class=" <%= typeof page !== 'undefined' && page === 'login' ? 'active' : '' %> nav-item">
                     <a class="<%= typeof page !== 'undefined' && page === 'register' ? 'active' : '' %> nav-link"
-                        href="#"><%= currentUser.Name %> </a>
+                        href="/edit"><%= currentUser.Name %> </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/logout">Logout</a>
@@ -43,10 +43,20 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/add">Add</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/my">My Products</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/sells">Sells</a>
+                </li>
                 <% } else { %>
+                <li class="nav-item">
+                    <a class="nav-link" href="/previous">Order History</a>
+                </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/cart"><i class="fa fa-shopping-cart"></i></a>
                 </li>
+
                 <% } %>
                 <% } %>
 

@@ -1,0 +1,39 @@
+<%- include("../partials/header") %>
+
+<div class="container">
+    <div class="row  ">
+
+        <% if(data.length!=0) { %>
+        <% var total=0%>
+        <% data.forEach((product)=>{ %>
+        <%total+=product.curr.Cost*product.res.Quantity%>
+        <div class=" col-md-6 text-center">
+            <div class=" card ">
+                <div class="card-body">
+                    <div class="card-title bg-dark text-light text-center"><%= product.curr.name%></div>
+                    <div> Price:Rs.<%= product.curr.Cost%></div>
+                    <div>Quantity: <%=product.res.Quantity%></div>
+                    <a href="/product/<%=product.curr.id %>" class="stretched-link"></a>
+                </div>
+            </div>
+            <div class=" card-footer text-center">
+                <form action="/product/<%=product.curr.id %>/delete?_method=DELETE" method="POST">
+                    <button type="submit" class="btn btn-danger">Delete</button></form>
+            </div>
+        </div>
+
+        <% })%>
+    </div>
+    <h1 class="card-footer">Grand total: <%=total%></h1>
+    <div class="text-right">
+        <button type="button" class="btn btn-success"><a style="color: white;" href="/checkout">Checkout</button>
+    </div>
+
+    <%}  else {%>
+    <div class="text-center"></div>
+    <h1 class="warning"> Empty!!!!</h1>
+    <%}%>
+    </div>
+</div>
+
+<%- include("../partials/footer") %>

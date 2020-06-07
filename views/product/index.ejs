@@ -2,20 +2,23 @@
 
 <div class="container">
     <div class="row  ">
-        <% data.forEach((product)=>{ %>
+        <% var x=1 %>
+        <% data.forEach((product)=>{ if(product.isvisible==1){ x=0%>
         <div class=" col-xl-3 col-md-4 col-sm-6 ">
             <div class=" card ">
                 <img src="<%= product.image%>" alt="<%= product.type%>" class="card-img-top  mx-auto d-block"
-                    style="max-height:95%;width:auto;max-width:100%">
+                    style="max-height:150px;width:auto;max-width:100%">
                 <div class="card-body">
                     <div class="card-title bg-dark text-light text-center"><%= product.name%></div>
-                    <div class="card-text ">$<%= product.Cost%></div>
+                    <div class="card-text ">Price: Rs. <%= product.Cost%></div>
                     <a href="/product/<%=product.id %>" class="stretched-link"></a>
                 </div>
             </div>
         </div>
-
-        <% }) %>
+        <% } }) ; if(x==1) {%>
+        <div class="text-center pt-5"></div>
+        <h1 class="text-warning">No Products Added yet</h1>
+        <%}%>
     </div>
 </div>
 

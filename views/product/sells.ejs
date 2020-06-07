@@ -1,0 +1,34 @@
+<%- include("../partials/header") %>
+
+<div class="container">
+    <div class="row  ">
+        <% if(data.length!=0) { %>
+        <% var total=0%>
+        <% data.forEach((product)=>{ %>
+        <%total+=product.res.Cost*product.curr.Quantity%>
+        <% var date=new Date(parseInt(product.curr.date))%>
+        <div class=" col-md-6 text-center">
+            <div class=" card ">
+                <div class="card-body">
+                    <div class="card-title bg-dark text-light text-center"><%= product.res.name%></div>
+                    <div> Price: Rs. <%= product.res.Cost%></div>
+                    <div>Quantity: <%=product.curr.Quantity%></div>
+                    <div>Date: <%=date%></div>
+                    <a href="/product/<%=product.res.id %>" class="stretched-link"></a>
+                </div>
+            </div>
+        </div>
+
+        <% })%>
+        <h1 class="card-footer">Total sells : <%=total%></h1>
+
+    </div>
+
+    <%}  else {%>
+    <div class="text-center"></div>
+    <h1 class="warning">No sells Yet!</h1>
+    <%}%>
+    </div>
+</div>
+
+<%- include("../partials/footer") %>

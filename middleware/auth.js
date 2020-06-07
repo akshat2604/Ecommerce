@@ -14,7 +14,7 @@ const seller = async (req, res, next) => {
         });
     }
     else {
-        req.flash("error", "Please Login First");
+        req.flash("error", "Please Login First as seller ");
         res.redirect(`/login`);
     }
 }
@@ -24,13 +24,14 @@ const notseller = async (req, res, next) => {
             if (user[0].isseller == 0)
                 return next();
             else {
-                req.flash("error", "seller cant buy a product");
+                req.flash("error", "A Seller cannot buy a product");
                 res.redirect("/");
             }
         });
     }
     else {
-        return next();
+        req.flash("error", "Please Login First as Customer ");
+        res.redirect(`/login`);
     }
 }
 
