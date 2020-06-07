@@ -102,9 +102,6 @@ User.login = async (customer, result) => {
 };
 User.logout = async (req, result) => {
 };
-User.logoutofall = async (req, result) => {
-    req.logoutofall();
-};
 User.checkout = async (req, result) => {
     const cart_id = req.user.Cart_id || req.cart;
     if (cart_id) {
@@ -249,4 +246,5 @@ User.sells = async (req, result) => {
         }
     });
 };
+
 module.exports = User;

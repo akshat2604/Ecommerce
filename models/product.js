@@ -12,14 +12,54 @@ Product.getAll = result => {
     });
 };
 Product.getbyid = (req, id, result) => {
-    sql.query(`SELECT * FROM Product where id='${id}'`, (err, res) => {
+    sql.query(`SELECT * FROM Product where id='${id}'`, (err, resoo) => {
         if (err) {
             console.log("error: ", err);
             result(err, null);
             return;
         }
         else {
-            result(null, res[0]);
+            const product = resoo[0];
+            const productso = [];
+            if (req.isAuthenticated()) {
+                sql.query(`SELECT * FROM product where seller_id='${product.seller_id}' and name='${product.name}'`, async (err, reso) => {
+                    if (err) {
+                        console.log("error: ", err);
+                        result(err, null);
+                        return;
+                    }
+                    else {
+                        if (reso.length != 0) {
+                            await reso.forEach((res, i) => {
+                                sql.query(`SELECT * FROM purchased where product_id='${res.id}' and customer_id='${req.user.id}';`, async (err, resi) => {
+                                    if (err) {
+                                        console.log("error: ", err);
+                                        result(err, null);
+                                        return;
+                                    }
+                                    else {
+                                        await resi.forEach((resooo, j) => {
+                                            const curr = resooo;
+                                            if (curr)
+                                                productso.push({ curr, res });
+                                            if (i == reso.length - 1 && (j == resi.length - 1))
+                                                return result(null, { product, productso })
+                                        });
+                                        if (resi.length == 0 && i == reso.length - 1)
+                                            return result(null, { product, productso })
+                                    }
+                                });
+                            });
+                        }
+                        else {
+                            result(null, { product, productso })
+                        }
+                    }
+                });
+            }
+            else {
+                result(null, { product, productso })
+            }
         }
     });
 };
@@ -130,7 +170,6 @@ Product.deletefromcart = async (req, result) => {
                         return;
                     }
                     else {
-                        console.log(reso)
                         sql.query(`update product set quantity=quantity+${reso[0].Quantity} where id='${req.params.id}'`, (err, resoo) => {
                             console.log("error: ", err);
 
@@ -226,6 +265,34 @@ Product.edit = (req, result) => {
             else {
                 result("You have no such Product", null);
             }
+        }
+    });
+}
+Product.search = (req, res, result) => {
+    const arr = req.query.search.trim().split(' ');
+    const products = [];
+    if (arr.length == 0) {
+        req.flash("error", "Please enter a search query");
+        return res.redirect("/");
+    }
+    arr.forEach((product, i) => {
+        if (product != '') {
+            sql.query(`SELECT * FROM Product where name='${product}' or type='${product}';`, (err, res) => {
+                if (err) {
+                    console.log("error: ", err);
+                    result(err, null);
+                    return;
+                }
+                else {
+                    products.push(...res);
+                    if (i == arr.length - 1) {
+                        return result(null, products);
+                    }
+                }
+            });
+        }
+        else if (arr.length == 1) {
+            return result(null, []);
         }
     });
 }

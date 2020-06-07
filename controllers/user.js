@@ -4,7 +4,6 @@ exports.register = async (req, res) => {
   user.register(req.body, (err, data) => {
     if (err) {
       const message = err.message;
-      console.log(message)
       if (message.indexOf("ER_DUP_ENTRY") != -1) {
         if (message.indexOf("email") != -1)
           req.flash("error", "Email is Already Used");
@@ -67,7 +66,6 @@ exports.registerform = async (req, res) => {
   res.render("register", { page: 'register' });
 }
 exports.loginform = async (req, res) => {
-  console.log(req.session.returnTo)
   req.session.returnTo = req.query.origin || '/';
   res.render("login", { page: 'login' });
 }

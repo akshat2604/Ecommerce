@@ -10,6 +10,7 @@ router.post('/login', passport.authenticate("local", {
     failureFlash: true,
     successFlash: 'Loggedin Successfully'
 }), function (req, res) {
+    console.log("return to", req.session.returnTo)
     res.redirect(req.session.returnTo);
 }
 );

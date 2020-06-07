@@ -8,7 +8,6 @@ const express = require("express"),
     LocalStrategy = require("passport-local").Strategy,
     methodOverride = require("method-override"),
     flash = require("connect-flash"),
-    multer = require("multer"),
     sql = require("./models/db"),
     bcrypt = require('bcryptjs');
 app.use(bodyParser.urlencoded({ extended: 'true' }));
@@ -24,7 +23,6 @@ app.use(require("express-session")({
     cookie: { maxAge: 100 * 60 * 60 * 24 * 30 }
 }));
 app.use(cookieParser('secret'));
-app.locals.moment = require('moment');
 
 app.use(passport.initialize());
 app.use(passport.session());

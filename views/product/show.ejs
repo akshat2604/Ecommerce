@@ -2,25 +2,23 @@
 <div class="row">
     <div class="col-md-6">
         <div class="card">
-            <img src="<%=data.image%>" alt="<%= data.Type%>" class="card-img-top rounded img-responsive"
-                style=" height: 500px;
-                max-height: 100%;
-                width: auto;
-                max-width: 100%">
+            <img src="<%=data.product.image%>" alt="<%= data.product.Type%>"
+                class="card-img-top imag-fluid rounded img-responsive"
+                style=" max-height:400px; width: auto;max-width:300px;">
         </div>
     </div>
     <div class="col-md-3">
         <div class="card-body">
-            <h2 class=" text-primary pb-2">Name: <%= data.name %></h2>
-            <h6 class=" pb-3">Type: <%= data.Type %></h6>
-            <h3 class=" pb-2"> Cost: <%= data.Cost %></h3>
+            <h2 class=" text-primary pb-2">Name: <%= data.product.name %></h2>
+            <h6 class=" pb-3">Type: <%= data.product.Type %></h6>
+            <h3 class=" pb-2"> Cost: <%= data.product.Cost %></h3>
         </div>
-        <%if( currentUser&& currentUser.id==data.seller_id){ if(data.isvisible==1){%>
+        <%if( currentUser&& currentUser.id==data.product.seller_id){ if(data.product.isvisible==1){%>
         <div class="row">
             <p class=" col-6 text-left">
-                <a class="btn btn-success" href="/product/<%=data.id %>/edit">Edit</a>
+                <a class="btn btn-success" href="/product/<%=data.product.id %>/edit">Edit</a>
             </p>
-            <form action="/product/<%=data.id%>?_method=DELETE" class=" col-6 text-right" method="POST">
+            <form action="/product/<%=data.product.id%>?_method=DELETE" class=" col-6 text-right" method="POST">
                 <button type="submit" class="btn btn-danger">Delete</button></form>
         </div>
         <%}else{%>
@@ -31,18 +29,18 @@
         <div class="text-center pt-3"></div>
         <h1 class="warning">This Product is not sold by you.</h1>
         <%}else{%>
-        <%if(data.Quantity>0 &&(data.isvisible==1)){%>
-        <form action="/<%=data.id%>/addtocart" method="POST" class="form-inline pt-5">
+        <%if(data.product.Quantity>0 &&(data.product.isvisible==1)){%>
+        <form action="/<%=data.product.id%>/addtocart" method="POST" class="form-inline pt-5">
             <div class="form-group">
-                <label for="Quantity">Quantity:</label>
+                <label for="Quantity">Quantity: </label>
                 <input type="number" class="form-control" name="quantity" id="Quantity" required min=1
-                    max=<%= data.Quantity %>>
+                    max=<%= data.product.Quantity %>>
             </div>
             <div class=" pl-5">
                 <button type="submit" class=" btn btn-primary text-right">Add to cart</button>
             </div>
         </form>
-        <%}else if(data.isvisible==0){%>
+        <%}else if(data.product.isvisible==0){%>
         <div class="text-center pt-3"></div>
         <h1 class="warning">This Product is view only as it's seller might have modified or deleted it.</h1>
         <%}else{%>
@@ -53,11 +51,22 @@
     </div>
 
     <div class="col-md-3">
-        <div class="list-group">
-            <li class="list-group-item active">Info 1</li>
-            <li class="list-group-item">Info 2</li>
-            <li class="list-group-item">Info 3</li>
+        <% if(data.productso.length!=0){%>
+        <h6 class="text-info pt-3">Your order history </h6>
+        <% data.productso.forEach((product)=>{%>
+        <% var date=new Date(parseInt(product.curr.date))%>
+        <div class="list-group pb-2">
+            <li class="list-group-item">On <%=date%>
+                Quantity: <%=product.curr.Quantity%></li>
+            <hr>
         </div>
+        <% })}else if(currentUser){%>
+        <div class="text-center pt-3"></div>
+        <h6 class="text-info">You have not purchased this product yet.</h6>
+        <%} else {%>
+        <div class="text-center pt-3"></div>
+        <h6 class="text-info">Please Login to see your order history for this product. </h6>
+        <%}%>
     </div>
 </div>
 

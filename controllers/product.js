@@ -2,7 +2,7 @@ const Product = require("../models/product");
 exports.findAll = (req, res) => {
   Product.getAll((err, data) => {
     if (err) {
-      req.flash("error", "Some error occurred "+err);
+      req.flash("error", "Some error occurred " + err);
       res.status(500).redirect("/");
     }
     else {
@@ -13,11 +13,10 @@ exports.findAll = (req, res) => {
 exports.getbyid = (req, res) => {
   Product.getbyid(req, req.params.id, (err, data) => {
     if (err) {
-      req.flash("error", "Some error occurred "+err);
+      req.flash("error", "Some error occurred " + err);
       res.status(500).redirect("/");
     }
     else {
-
       res.render("product/show", { data: data });
     }
   });
@@ -25,7 +24,7 @@ exports.getbyid = (req, res) => {
 exports.add = (req, res) => {
   Product.add(req.user, req.body, (err, data) => {
     if (err) {
-      req.flash("error", "Some error occurred "+err)
+      req.flash("error", "Some error occurred " + err)
       res.status(500).redirect("/");
     }
     else res.status(201).redirect("/");
@@ -33,9 +32,8 @@ exports.add = (req, res) => {
 };
 exports.addtocart = (req, res) => {
   Product.addtocart(req, res, (err, data) => {
-    console.log(err)
     if (err) {
-      req.flash("error", "Some error occurred while adding Product."+err)
+      req.flash("error", "Some error occurred while adding Product." + err)
       res.status(500).redirect("/");
     }
     else {
@@ -50,7 +48,7 @@ exports.addform = (req, res) => {
 exports.getcart = (req, res) => {
   Product.getcart(req, async (err, data) => {
     if (err) {
-      req.flash("error", "Some error occurred "+err);
+      req.flash("error", "Some error occurred " + err);
       res.status(500).redirect("/");
     }
     else {
@@ -63,7 +61,7 @@ exports.deletefromcart = (req, res) => {
   Product.deletefromcart(req, async (err, data) => {
     if (err) {
       if (err != "Product is not in your cart")
-        req.flash("error", "Some error occurred "+err);
+        req.flash("error", "Some error occurred " + err);
       else {
         req.flash("error", err);
       }
@@ -79,7 +77,7 @@ exports.delete = (req, res) => {
   Product.delete(req, async (err, data) => {
     if (err) {
       if (err != "You have no such Product")
-        req.flash("error", "Some error occurred "+err);
+        req.flash("error", "Some error occurred " + err);
       else {
         req.flash("error", err);
       }
@@ -105,7 +103,7 @@ exports.my = (req, res) => {
 exports.editform = (req, res) => {
   Product.getbyid(req, req.params.id, (err, data) => {
     if (err) {
-      req.flash("error", "Some error occurred "+err);
+      req.flash("error", "Some error occurred " + err);
       res.status(500).redirect("/");
     }
     else {
@@ -117,7 +115,7 @@ exports.edit = (req, res) => {
   Product.edit(req, (err, data) => {
     if (err) {
       if (err != "You have no such Product")
-        req.flash("error", "Some error occurred "+err);
+        req.flash("error", "Some error occurred " + err);
       else {
         req.flash("error", err);
       }
@@ -127,4 +125,21 @@ exports.edit = (req, res) => {
       res.redirect("/my")
     }
   });
-}
+};
+exports.search = (req, res) => {
+  Product.search(req, res, (err, data) => {
+    if (err) {
+      req.flash("error", "Some error occurred " + err);
+      res.status(500).redirect("/");
+    }
+    else {
+      if (data.length == 0) {
+        req.flash("error", "No search results found")
+        res.redirect("/")
+      }
+      else {
+        res.render("product/index", { data: data });
+      }
+    }
+  });
+};
