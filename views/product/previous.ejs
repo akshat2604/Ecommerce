@@ -8,7 +8,7 @@
         <% data.forEach((product)=>{ %>
         <%total+=product.curr.Cost*product.res.Quantity%>
         <% var date=new Date(parseInt(product.res.date))%>
-        <div class=" col-md-6 text-center">
+        <div class=" col-md-3 text-center">
             <div class=" card ">
                 <div class="card-body">
                     <div class="card-title bg-dark text-light text-center"><%= product.curr.name%></div>
