@@ -138,6 +138,7 @@ exports.search = (req, res) => {
         res.redirect("/")
       }
       else {
+        req.flash("success", "Search results found ")
         res.render("product/index", { data: data });
       }
     }

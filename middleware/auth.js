@@ -34,5 +34,4 @@ const notseller = async (req, res, next) => {
         res.redirect(`/login`);
     }
 }
-
 module.exports = { auth, seller, notseller };

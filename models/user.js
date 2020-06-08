@@ -233,7 +233,6 @@ User.sells = async (req, result) => {
                             }
                             if (l == reso.length) {
                                 return result(null, productso)
-                                //console.log(productso)
                             }
 
                         }
@@ -246,5 +245,4 @@ User.sells = async (req, result) => {
         }
     });
 };
-
 module.exports = User;

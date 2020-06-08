@@ -71,13 +71,6 @@ connection.connect(function (err) {
         );`
     ]
     queries.forEach(query => connection.query(query))
-    /* connection.query(`select * from cart_item where product_id='2'`, (err, product) => {
-       if (err) console.log(err);
-       else {
-         console.log(result.fieldCount);
-       }
-     });*/
-
   });
 });
 module.exports = connection;
