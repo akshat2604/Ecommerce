@@ -11,11 +11,11 @@ const express = require("express"),
     sql = require("./models/db"),
     bcrypt = require('bcryptjs');
 app.use(bodyParser.urlencoded({ extended: 'true' }));
+app.use(bodyParser.json());
 app.use(express.static(__dirname + "/public"));
 app.set("view engine", 'ejs');
 app.use(methodOverride("_method"));
 app.use(flash());
-app.use(bodyParser.json());
 app.use(require("express-session")({
     secret: "QWERTYUIOP",
     resave: false,
