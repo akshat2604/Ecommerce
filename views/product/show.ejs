@@ -1,13 +1,13 @@
 <%- include("../partials/header") %>
 <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-5">
         <div class="card">
             <img src="<%=data.product.image%>" alt="<%= data.product.Type%>"
                 class="card-img-top imag-fluid rounded img-responsive"
                 style=" max-height:400px; width: auto;max-width:300px;">
         </div>
     </div>
-    <div class="col-md-3">
+    <div class="col-md-4">
         <div class="card-body">
             <h2 class=" text-primary pb-2">Name: <%= data.product.name %></h2>
             <h6 class=" pb-3">Type: <%= data.product.Type %></h6>
@@ -30,13 +30,13 @@
         <h1 class="warning">This Product is not sold by you.</h1>
         <%}else{%>
         <%if(data.product.Quantity>0 &&(data.product.isvisible==1)){%>
-        <form action="/<%=data.product.id%>/addtocart" method="POST" class="form-inline pt-5">
-            <div class="form-group">
+        <form action="/<%=data.product.id%>/addtocart" method="POST" class="form-inline col-12">
+            <div class="form-group col-sm-6 col-md-6">
                 <label for="Quantity">Quantity: </label>
                 <input type="number" class="form-control" name="quantity" id="Quantity" required min=1
                     max=<%= data.product.Quantity %>>
             </div>
-            <div class=" pl-5">
+            <div class="pl-1 col-sm-3 col-md-9">
                 <button type="submit" class=" btn btn-primary text-right">Add to cart</button>
             </div>
         </form>

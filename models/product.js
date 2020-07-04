@@ -2,7 +2,7 @@ const sql = require("./db.js");
 const { v1: uuidv1 } = require('uuid');
 const Product = {};
 Product.getAll = result => {
-    sql.query(`SELECT * FROM Product`, (err, res) => {
+    sql.query(`SELECT * FROM Product where isvisible=1 limit 12`, (err, res) => {
         if (err) {
             console.log("error: ", err);
             result(err, null)
@@ -86,29 +86,40 @@ Product.add = (user, product, result) => {
 };
 Product.addtocart = (req, res, result) => {
     if (req.isAuthenticated()) {
-        sql.query(`select * from cart_item where product_id='${req.params.id}' and cart_id = '${req.user.Cart_id}'`, (err, product) => {
+        sql.query(`select * from product where id='${req.params.id}'`, (err, product) => {
             if (err) result(err, null);
             else {
-                if (product.length == 0) {
-                    sql.query(`insert into cart_item values 
+                if (parseInt(req.body.quantity) <= product[0].Quantity) {
+                    sql.query(`select * from cart_item where product_id='${req.params.id}' and cart_id = '${req.user.Cart_id}'`, (err, product) => {
+                        if (err) result(err, null);
+                        else {
+                            if (product.length == 0) {
+                                sql.query(`insert into cart_item values 
                     (${req.body.quantity},
                     '${req.user.Cart_id}',
                     '${req.params.id}'
                     );`, (err, res) => {
-                        if (err) result(err, null);
-                        else {
-                            sql.query(`update product set quantity=quantity-${req.body.quantity} where id='${req.params.id}'`, (err, resoo) => {
-                                if (err) result(err, null);
-                                else result(null, res)
+                                    if (err) result(err, null);
+                                    else {
+                                        sql.query(`update product set quantity=quantity-${req.body.quantity} where id='${req.params.id}'`, (err, resoo) => {
+                                            if (err) result(err, null);
+                                            else result(null, res)
 
-                            })
+                                        })
+                                    }
+                                })
+                            }
+                            else {
+
+                                req.flash("error", "Product is already in your cart");
+                                res.redirect("back");
+                            }
                         }
                     })
                 }
                 else {
-
-                    req.flash("error", "Product is already in your cart");
-                    res.redirect("back");
+                    req.flash("error", "Selected Quantity not available Please reduce it");
+                    res.redirect("back")
                 }
             }
         })
@@ -277,7 +288,7 @@ Product.search = (req, res, result) => {
     }
     arr.forEach((product, i) => {
         if (product != '') {
-            sql.query(`SELECT * FROM Product where name='${product}' or type='${product}';`, (err, res) => {
+            sql.query(`SELECT * FROM Product where name like'%${product}%' or type='%${product}% ';`, (err, res) => {
                 if (err) {
                     console.log("error: ", err);
                     result(err, null);
@@ -296,4 +307,218 @@ Product.search = (req, res, result) => {
         }
     });
 }
+/* Product.addt = (user, product, result) => {
+    const product_id = uuidv1().toString();
+    sql.query(`insert into product values 
+    ('${product_id}',
+    '${product.type}',
+    1,
+    '${product.image}',
+    ${product.cost},
+    ${product.quantity},
+    '${product.name}',
+    '${user.id}'
+    );`,
+        (err, res) => {
+            if (err) {
+                console.log("error: ", err);
+                result(err, null);
+                return;
+            }
+            else {
+                const product_id = uuidv1().toString();
+
+                sql.query(`insert into product values 
+                ('${product_id}',
+                '${product.type}',
+                1,
+                '${product.image}',
+                ${product.cost},
+                ${product.quantity},
+                '${product.name}',
+                '${user.id}'
+                );`,
+                    (err, res) => {
+                        if (err) {
+                            console.log("error: ", err);
+                            result(err, null);
+                            return;
+                        }
+                        else {
+                            const product_id = uuidv1().toString();
+
+                            sql.query(`insert into product values 
+                            ('${product_id}',
+                            '${product.type}',
+                            1,
+                            '${product.image}',
+                            ${product.cost},
+                            ${product.quantity},
+                            '${product.name}',
+                            '${user.id}'
+                            );`,
+                                (err, res) => {
+                                    if (err) {
+                                        console.log("error: ", err);
+                                        result(err, null);
+                                        return;
+                                    }
+                                    else {
+                                        const product_id = uuidv1().toString();
+
+                                        sql.query(`insert into product values 
+                                        ('${product_id}',
+                                        '${product.type}',
+                                        1,
+                                        '${product.image}',
+                                        ${product.cost},
+                                        ${product.quantity},
+                                        '${product.name}',
+                                        '${user.id}'
+                                        );`,
+                                            (err, res) => {
+                                                if (err) {
+                                                    console.log("error: ", err);
+                                                    result(err, null);
+                                                    return;
+                                                }
+                                                else {
+                                                    const product_id = uuidv1().toString();
+
+                                                    sql.query(`insert into product values 
+                                                    ('${product_id}',
+                                                    '${product.type}',
+                                                    1,
+                                                    '${product.image}',
+                                                    ${product.cost},
+                                                    ${product.quantity},
+                                                    '${product.name}',
+                                                    '${user.id}'
+                                                    );`,
+                                                        (err, res) => {
+                                                            if (err) {
+                                                                console.log("error: ", err);
+                                                                result(err, null);
+                                                                return;
+                                                            }
+                                                            else {
+                                                                const product_id = uuidv1().toString();
+
+                                                                sql.query(`insert into product values 
+                                                                ('${product_id}',
+                                                                '${product.type}',
+                                                                1,
+                                                                '${product.image}',
+                                                                ${product.cost},
+                                                                ${product.quantity},
+                                                                '${product.name}',
+                                                                '${user.id}'
+                                                                );`,
+                                                                    (err, res) => {
+                                                                        if (err) {
+                                                                            console.log("error: ", err);
+                                                                            result(err, null);
+                                                                            return;
+                                                                        }
+                                                                        else {
+                                                                            const product_id = uuidv1().toString();
+
+                                                                            sql.query(`insert into product values 
+                                                                            ('${product_id}',
+                                                                            '${product.type}',
+                                                                            1,
+                                                                            '${product.image}',
+                                                                            ${product.cost},
+                                                                            ${product.quantity},
+                                                                            '${product.name}',
+                                                                            '${user.id}'
+                                                                            );`,
+                                                                                (err, res) => {
+                                                                                    if (err) {
+                                                                                        console.log("error: ", err);
+                                                                                        result(err, null);
+                                                                                        return;
+                                                                                    }
+                                                                                    else {
+                                                                                        const product_id = uuidv1().toString();
+
+                                                                                        sql.query(`insert into product values 
+                                                                                        ('${product_id}',
+                                                                                        '${product.type}',
+                                                                                        1,
+                                                                                        '${product.image}',
+                                                                                        ${product.cost},
+                                                                                        ${product.quantity},
+                                                                                        '${product.name}',
+                                                                                        '${user.id}'
+                                                                                        );`,
+                                                                                            (err, res) => {
+                                                                                                if (err) {
+                                                                                                    console.log("error: ", err);
+                                                                                                    result(err, null);
+                                                                                                    return;
+                                                                                                }
+
+                                                                                                else {
+                                                                                                    const product_id = uuidv1().toString();
+
+                                                                                                    sql.query(`insert into product values 
+                                                                                                    ('${product_id}',
+                                                                                                    '${product.type}',
+                                                                                                    1,
+                                                                                                    '${product.image}',
+                                                                                                    ${product.cost},
+                                                                                                    ${product.quantity},
+                                                                                                    '${product.name}',
+                                                                                                    '${user.id}'
+                                                                                                    );`,
+                                                                                                        (err, res) => {
+                                                                                                            if (err) {
+                                                                                                                console.log("error: ", err);
+                                                                                                                result(err, null);
+                                                                                                                return;
+                                                                                                            }
+                                                                                                            else {
+                                                                                                                const product_id = uuidv1().toString();
+
+                                                                                                                sql.query(`insert into product values 
+                                                                                                                ('${product_id}',
+                                                                                                                '${product.type}',
+                                                                                                                1,
+                                                                                                                '${product.image}',
+                                                                                                                ${product.cost},
+                                                                                                                ${product.quantity},
+                                                                                                                '${product.name}',
+                                                                                                                '${user.id}'
+                                                                                                                );`,
+                                                                                                                    (err, res) => {
+                                                                                                                        if (err) {
+                                                                                                                            console.log("error: ", err);
+                                                                                                                            result(err, null);
+                                                                                                                            return;
+                                                                                                                        }
+                                                                                                                        else {
+                                                                                                                            result(null, res);
+
+                                                                                                                        }
+                                                                                                                    });
+                                                                                                            }
+                                                                                                        });
+                                                                                                }
+                                                                                            });
+                                                                                    }
+                                                                                });
+                                                                        }
+                                                                    });
+                                                            }
+                                                        });
+                                                }
+                                            });
+                                    }
+                                });
+                        }
+                    });
+            }
+        });
+}; */
 module.exports = Product;

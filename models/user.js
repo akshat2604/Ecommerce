@@ -175,7 +175,7 @@ User.update = async (req, result) => {
 };
 User.previous = async (req, result) => {
     const productso = [];
-    sql.query(`SELECT * FROM purchased where customer_id='${req.user.id}'`, async (err, reso) => {
+    sql.query(`SELECT * FROM purchased where customer_id='${req.user.id}' order by date desc` , async (err, reso) => {
         if (err) {
             console.log("error: ", err);
             result(err, null);

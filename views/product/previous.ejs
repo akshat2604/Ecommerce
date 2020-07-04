@@ -1,24 +1,29 @@
 <%- include("../partials/header") %>
 
 <div class="container">
-    <div class="row  ">
+    <div class="row ">
         <% if(data.length!=0) { %>
         <% var total=0%>
         <% data.forEach((product)=>{ %>
         <%total+=product.curr.Cost*product.res.Quantity%>
-        <% var date=new Date(parseInt(product.res.date))%>
-        <div class=" col-md-3 text-center">
-            <div class=" card ">
-                <div class="card-body">
+        <% var date=new Date(parseInt(product.res.date)).toDateString()%>
+        <div class="card col-md-12 text-center">
+            <div class="row">
+                <div class="card-img col-2">
+                    <img src="<%=product.curr.image%>" alt="<%= product.type%>" class="card-img-top  mx-auto d-block"
+                    style="max-height:120px;width:auto;max-width:100%"> 
+                </div>
+                <div class="card-body col-9">
                     <div class="card-title bg-dark text-light text-center"><%= product.curr.name%></div>
-                    <div> Price: Rs. <%= product.curr.Cost%></div>
-                    <div>Quantity: <%=product.res.Quantity%></div>
-                    <div>Date: <%=date%></div>
+                    <pre>
+                    <span> Price: Rs. <%= product.curr.Cost%></span>    
+                    <span>Quantity: <%=product.res.Quantity%></span>
+                    <span>Date: <%=date%></span>
+                </pre>
                     <a href="/product/<%=product.curr.id %>" class="stretched-link"></a>
                 </div>
             </div>
         </div>
-
         <% })%>
     </div>
 

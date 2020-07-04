@@ -6,7 +6,10 @@ exports.findAll = (req, res) => {
       res.status(500).redirect("/");
     }
     else {
-      res.render("product/index", { data: data });
+      if (req.xhr)
+        res.json(data);
+      else
+        res.render("product/index", { data: data });
     }
   });
 };
@@ -127,6 +130,7 @@ exports.edit = (req, res) => {
   });
 };
 exports.search = (req, res) => {
+  conole.log("search")
   Product.search(req, res, (err, data) => {
     if (err) {
       req.flash("error", "Some error occurred " + err);

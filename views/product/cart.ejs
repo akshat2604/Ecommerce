@@ -1,8 +1,8 @@
 <%- include("../partials/header") %>
 
 <div class="container">
-    <div class="row  ">
-        <% if(data.length!=0) { %>
+    <% if(data.length!=0) { %>
+        <div class="row">
         <% var total=0%>
         <% data.forEach((product)=>{ %>
         <%total+=product.curr.Cost*product.res.Quantity%>
@@ -20,17 +20,21 @@
                     <button type="submit" class="btn btn-danger">Delete</button></form>
             </div>
         </div>
-
-        <% })%>
     </div>
+    <% })%>
     <h1 class="card-footer">Grand total: <%=total%></h1>
     <div class="text-right">
         <button type="button" class="btn btn-success"><a style="color: white;" href="/checkout">Checkout</button>
     </div>
+    <%} else {%>
+    <div class="row">
+        <div class="cart">
+            <img src="/images/empty_cart.png" alt="" class="rounded cart"></div>
+        <div class="text-center text-info col-12">
+            Plese Add some products to cart
+        </div>
+    </div>
 
-    <%}  else {%>
-    <div class="text-center"></div>
-    <h1 class="warning"> Empty!!!!</h1>
     <%}%>
     </div>
 </div>
